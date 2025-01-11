@@ -9,7 +9,7 @@ domain = sys.argv[3]
 sleepTime = int(sys.argv[4])
 
 connCloudflare = http.client.HTTPSConnection("api.cloudflare.com")
-headers = {
+header = {
     'authorization': f"Bearer {API_Token}",
     'content-type': "application/json"
 }
@@ -21,8 +21,8 @@ def get_Public_IP():
     return res.read().decode("utf-8")
     
 def get_DNS_Record():
-    print("INFO: Retrieving DNS records from Cloudlare")
-    connCloudflare.request("GET", "/client/v4/zones/e06f6db8d32b622d0c4af30c81672aec/dns_records", headers=headers)
+    print("INFO: Retrieving DNS records from Cloudflare")
+    connCloudflare.request("GET", "/client/v4/zones/{zone_ID}/dns_records", headers=header)
     res = connCloudflare.getresponse()
     response = json.load(res)
     print(response)
@@ -51,7 +51,7 @@ while True:
         #Get list of DNS records, to find the DNS record ID
         DNS_record_ID, DNS_Content = get_DNS_Record()
         if not DNS_record_ID or not DNS_Content:
-            print("ERROR: DNS Record not found! Check config file and/or Cloudlare domain configuration")
+            print("ERROR: DNS Record not found! Check config file and/or Cloudflare domain configuration")
             exit()
 
         #Update the DNS Record?
