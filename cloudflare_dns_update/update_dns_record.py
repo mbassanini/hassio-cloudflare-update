@@ -22,7 +22,7 @@ def get_Public_IP():
     
 def get_DNS_Record():
     print("INFO: Retrieving DNS records from Cloudlare")
-    connCloudflare.request("GET", "/client/v4/zones/e06f6db8d32b622d0c4af30c81672aec/dns_records", headers=headers)
+    connCloudflare.request("GET", "/client/v4/zones/{zone_ID}/dns_records", headers=headers)
     res = connCloudflare.getresponse()
     response = json.load(res)
     print(response)
